@@ -28,7 +28,7 @@ public class PercolationStats {
         int col = StdRandom.uniform(1, n + 1);
 
         if (percolate.isOpen(row, col)) {
-          System.out.printf("[%d, %d]isOpen\n", row, col);
+          // System.out.printf("[%d, %d]isOpen\n", row, col);
           continue;
         }
         percolate.open(row, col);

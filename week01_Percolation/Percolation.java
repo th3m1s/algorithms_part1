@@ -45,14 +45,14 @@ public class Percolation {
 
   public void open(int row, int col) {// open site (row, col) if it is not open already
     if (isValid(row, col) && !isOpen(row, col)) {
-      System.out.printf("Open site[%d, %d]\n", row, col);
+      // System.out.printf("Open site[%d, %d]\n", row, col);
       this.sites[xy2flat(row, col)] = true;
 
       if (row == 0) {
-        System.out.printf("Connect Dummy Top\n");
+        // System.out.printf("Connect Dummy Top\n");
         this.qu_sites.union(xy2flat(row, col), n * n);
       } else if (row == n) {
-        System.out.printf("Connect Dummy Bottom\n");
+        // System.out.printf("Connect Dummy Bottom\n");
         this.qu_sites.union(xy2flat(row, col), n * n + 1);
       }
 
@@ -62,22 +62,22 @@ public class Percolation {
 
   public void open_cross(int row, int col) {
     if (isValid(row - 1, col) && isOpen(row - 1, col)) {
-      System.out.printf("Connect up site\n");
+      // System.out.printf("Connect up site\n");
       this.qu_sites.union(xy2flat(row, col), xy2flat(row - 1, col));
     }
 
     if (isValid(row + 1, col) && isOpen(row + 1, col)) {
-      System.out.printf("Connect down site\n");
+      // System.out.printf("Connect down site\n");
       this.qu_sites.union(xy2flat(row, col), xy2flat(row + 1, col));
     }
 
     if (isValid(row + 1, col - 1) && isOpen(row, col - 1)) {
-      System.out.printf("Connect left site\n");
+      // System.out.printf("Connect left site\n");
       this.qu_sites.union(xy2flat(row, col), xy2flat(row, col - 1));
     }
 
     if (isValid(row, col + 1) && isOpen(row, col + 1)) {
-      System.out.printf("Connect right site\n");
+      // System.out.printf("Connect right site\n");
       this.qu_sites.union(xy2flat(row, col), xy2flat(row, col + 1));
     }
   }
