@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+#  Execution:  % pmd-coursera .
+#  Execution:  % pmd-coursera [directory name]
+
+# installation directory
+INSTALL=~/usr/local/algs4
+
+# configuration file
+PMD_XML=${INSTALL}/pmd.xml
+
+# find the latest version of PMD
+PMD=pmd-bin-[0-9].[0-9].[0-9]
+PMD_EXECUTE=$(ls -td ${INSTALL}/${PMD}/bin/run.sh | head -1)
+
+# execution command
+EXECUTE="$PMD_EXECUTE pmd -format csv -shortnames -R $PMD_XML -version 1.8 -language java -d $@"
+
+$EXECUTE | grep -v "Rule set" \
+         | awk  'BEGIN {FS = ",\"" };
+                 {print $3":"$5": "$6" ["$8"]"};
+                 END { if (NR == 1) print "PMD ends with " NR " warning."
+                       else if (NR >  1) print "PMD ends with " NR " warnings."
+                 }' \
+         | sed 's/"//g'

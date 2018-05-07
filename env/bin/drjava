@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# *************************************************
+# Wrapper for using DrJava
+# Last edited: November 27, 2017
+# *************************************************
+
+# This must match the install directory.
+INSTALL=~/usr/local/algs4
+
+jar=${INSTALL}/drjava.jar
+java -jar ${jar}

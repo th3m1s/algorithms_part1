@@ -1,0 +1,30 @@
+#DrJava configuration file
+#Mon May 07 22:02:58 JST 2018
+extra.classpath = /home/tagashira/usr/local/algs4/algs4.jar
+all.compiler.versions = true
+right.margin.columns = 80
+lineenum.enabled = true
+key.delete.next = [shift DELETE]
+key.delete.previous = [shift BACK_SPACE]
+interactions.exit.prompt = false
+interactions.reset.prompt = false
+save.before.compile = true
+compile.before.junit = true
+save.before.javadoc = true
+indent.level = 4
+auto.close.comments = true
+run.with.assert = false
+files.backup = false
+recent.files = [/home/tagashira/git/algorithms_part1/week01_Percolation/PercolationStats.java,/home/tagashira/git/algorithms_part1/week01_Percolation/Percolation.java]
+window.height = 1053
+window.width = 1920
+window.x = 0
+window.y = 27
+window.state = 6
+last.dir = /home/tagashira/git/algorithms_part1/week01_Percolation/PercolationStats.java
+last.interactions.dir = /home/tagashira/git/algorithms_part1/week01_Percolation
+dialog.completeword.javaapi = true
+tabbedpanes.state = 960 540 700 400
+dialog.drjava.survey.enabled = false
+new.version.notification = none (disabled)
+file.ext.registration = always
