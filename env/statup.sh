@@ -1,4 +1,5 @@
 #!/bin/bash
+## reference https://algs4.cs.princeton.edu/linux/
 
 echo "setup coursera java environment"
 
