@@ -1,21 +1,18 @@
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
-import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-//import Percolation;
+// import Percolation;
 
 public class PercolationStats {
-  static int n;
-  static int trials;
+  private static int n;
+  private static int trials;
 
-  double[] result;
+  private double[] result;
 
-  public PercolationStats(int n, int trials) {// perform trials independent experiments on an n-by-n grid
-    if (n <= 0 || trials <= 0)
-      throw new IllegalArgumentException("Arguments out of bound");
+  public PercolationStats(
+      int n, int trials) { // perform trials independent experiments on an n-by-n grid
+    if (n <= 0 || trials <= 0) throw new IllegalArgumentException("Arguments out of bound");
 
-    this.n      = n;
-    this.trials = trials;
     this.result = new double[trials];
 
     for (int i = 0; i < trials; i++) {
@@ -33,30 +30,34 @@ public class PercolationStats {
         }
         percolate.open(row, col);
       }
-      System.out.printf("Percolated\n");
+      // System.out.printf("Percolated\n");
       this.result[i] = (double) percolate.numberOfOpenSites() / (n * n);
-      System.out.printf("result[%d] = %f\n", i, result[i]);
+      // System.out.printf("result[%d] = %f\n", i, this.result[i]);
     }
   }
 
-  public double mean() {// sample mean of percolation threshold
+  public double mean() { // sample mean of percolation threshold
     return StdStats.mean(this.result);
   }
 
-  public double stddev() {// sample standard deviation of percolation threshold
+  public double stddev() { // sample standard deviation of percolation threshold
     return StdStats.stddev(this.result);
   }
 
-  public double confidenceLo() {// low  endpoint of 95% confidence interval
-    return mean() - 1.96 * stddev() / Math.sqrt(this.result.length);
+  private double confidence() {
+    return 1.96 * stddev() / Math.sqrt(this.result.length);
   }
 
-  public double confidenceHi() {// high endpoint of 95% confidence interval
-    return mean() + 1.96 * stddev() / Math.sqrt(this.result.length);
+  public double confidenceLo() { // low  endpoint of 95% confidence interval
+    return mean() - confidence();
   }
 
-  public static void main(String[] args) {// test client (described below)
-    n      = Integer.parseInt(args[0]);
+  public double confidenceHi() { // high endpoint of 95% confidence interval
+    return mean() + confidence();
+  }
+
+  public static void main(String[] args) { // test client (described below)
+    n = Integer.parseInt(args[0]);
     trials = Integer.parseInt(args[1]);
 
     PercolationStats pls = new PercolationStats(n, trials);
@@ -65,6 +66,7 @@ public class PercolationStats {
     // 95% confidence interval = [0.5912745987737567, 0.5947124012262428]
     System.out.printf("mean %f\n", pls.mean());
     System.out.printf("stddev %f\n", pls.stddev());
-    System.out.printf("95%% confidence interval [%f, %f]\n", pls.confidenceLo(), pls.confidenceHi());
+    System.out.printf(
+        "95%% confidence interval [%f, %f]\n", pls.confidenceLo(), pls.confidenceHi());
   }
 }

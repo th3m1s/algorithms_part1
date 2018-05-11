@@ -1,31 +1,29 @@
-import edu.princeton.cs.algs4.StdRandom;
-import edu.princeton.cs.algs4.StdStats;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-  int n;
-  boolean[] sites;
-  WeightedQuickUnionUF qu_sites;
+  private int n;
+  private WeightedQuickUnionUF quSites;
+  private boolean[] sites;
 
-  public Percolation(int n) {// create n-by-n grid, with all sites blocked
+  public Percolation(int n) { // create n-by-n grid, with all sites blocked
     if (n <= 0)
-      throw new IllegalArgumentException("n is less than or equal to 0");//error hanndling
+      throw new IllegalArgumentException("n is less than or equal to 0"); // error hanndling
 
-    this.n        = n;
-    this.qu_sites = new WeightedQuickUnionUF(n * n + 2);//add two dummies(virtual top and bottom)
-    this.sites    = new boolean[n * n];
+    this.n = n;
+    this.quSites = new WeightedQuickUnionUF(n * n + 2); // add two dummies(virtual top and bottom)
+    this.sites = new boolean[n * n];
 
     for (int i = 0; i < n * n; i++) {
-      this.sites[i] = false;//False:blocked,True:open
+      this.sites[i] = false; // False:blocked,True:open
     }
 
-    //connect virtual top site
+    // connect virtual top site
     for (int i = 0; i < n; i++) {
-      this.qu_sites.union(n * n, i);
+      this.quSites.union(n * n, i);
     }
-    //connect virtual bottom site
-    for (int i = (0 + n * n - n - 1); i < n; i++) {
-      this.qu_sites.union(i, n * n + 1);
+    // connect virtual bottom site
+    for (int i = (n == 1) ? 0 : (0 + n * n - n - 1); i < n; i++) {
+      this.quSites.union(i, n * n + 1);
     }
   }
 
@@ -39,91 +37,94 @@ public class Percolation {
     return (row - 1) * this.n + col - 1;
   }
 
-  private boolean isValid(int row, int col) {
-    return 1 <= row && row <= this.n && 1 <= col && col <= this.n && xy2flat(row, col) < this.n * this.n;//n*n and n*n+1 are dummies
+  private boolean isValid(int row, int col) { // n*n and n*n+1 are dummies
+    return 1 <= row
+        && row <= this.n
+        && 1 <= col
+        && col <= this.n
+        && 0 <= xy2flat(row, col)
+        && xy2flat(row, col) < this.n * this.n;
   }
 
-  public void open(int row, int col) {// open site (row, col) if it is not open already
+  public void open(int row, int col) { // open site (row, col) if it is not open already
     if (isValid(row, col) && !isOpen(row, col)) {
       // System.out.printf("Open site[%d, %d]\n", row, col);
       this.sites[xy2flat(row, col)] = true;
 
       if (row == 0) {
         // System.out.printf("Connect Dummy Top\n");
-        this.qu_sites.union(xy2flat(row, col), n * n);
+        this.quSites.union(xy2flat(row, col), n * n);
       } else if (row == n) {
         // System.out.printf("Connect Dummy Bottom\n");
-        this.qu_sites.union(xy2flat(row, col), n * n + 1);
+        this.quSites.union(xy2flat(row, col), n * n + 1);
       }
 
-      open_cross(row,col);
+      openCross(row, col);
     }
   }
 
-  public void open_cross(int row, int col) {
+  private void openCross(int row, int col) {
     if (isValid(row - 1, col) && isOpen(row - 1, col)) {
       // System.out.printf("Connect up site\n");
-      this.qu_sites.union(xy2flat(row, col), xy2flat(row - 1, col));
+      this.quSites.union(xy2flat(row, col), xy2flat(row - 1, col));
     }
 
     if (isValid(row + 1, col) && isOpen(row + 1, col)) {
       // System.out.printf("Connect down site\n");
-      this.qu_sites.union(xy2flat(row, col), xy2flat(row + 1, col));
+      this.quSites.union(xy2flat(row, col), xy2flat(row + 1, col));
     }
 
-    if (isValid(row + 1, col - 1) && isOpen(row, col - 1)) {
+    if (isValid(row, col - 1) && isOpen(row, col - 1)) {
       // System.out.printf("Connect left site\n");
-      this.qu_sites.union(xy2flat(row, col), xy2flat(row, col - 1));
+      this.quSites.union(xy2flat(row, col), xy2flat(row, col - 1));
     }
 
     if (isValid(row, col + 1) && isOpen(row, col + 1)) {
       // System.out.printf("Connect right site\n");
-      this.qu_sites.union(xy2flat(row, col), xy2flat(row, col + 1));
+      this.quSites.union(xy2flat(row, col), xy2flat(row, col + 1));
     }
   }
 
-  public boolean isOpen(int row, int col) {// is site (row, col) open?
+  public boolean isOpen(int row, int col) { // is site (row, col) open?
     try {
       validateIndex(row, col);
       return this.sites[xy2flat(row, col)];
     } catch (IndexOutOfBoundsException e) {
-      System.out.println("Error " + e.getMessage());
-      e.printStackTrace();
-      return false;
+      // System.out.println("Error " + e.getMessage());
+      // e.printStackTrace();
+      return this.sites[xy2flat(row, col)];
     }
   }
 
-  public boolean isFull(int row, int col) {// is site (row, col) full?
+  public boolean isFull(int row, int col) { // is site (row, col) full?
     try {
       validateIndex(row, col);
-      return this.qu_sites.connected(0, xy2flat(row, col));
+      return this.quSites.connected(0, xy2flat(row, col));
     } catch (IndexOutOfBoundsException e) {
-      System.out.println("Error " + e.getMessage());
-      e.printStackTrace();
+      // System.out.println("Error " + e.getMessage());
+      // e.printStackTrace();
       return false;
     }
   }
 
-  public int numberOfOpenSites() {// number of open sites
+  public int numberOfOpenSites() { // number of open sites
     int numberOfOpen = 0;
-    System.out.printf("Counting");
-    for (int i = 1; i <= n; i++) {
-      for (int j = 1; j <= n; j++) {
-        if (isOpen(i, j)) {
-          numberOfOpen++;
-          System.out.printf(".");
-        }
+    // System.out.printf("Counting");
+    for (int i = 0; i < n * n; i++) {
+      if (this.sites[i]) {
+        numberOfOpen++;
+        // System.out.printf(".");
       }
     }
-    System.out.printf("\n");
+    // System.out.printf("\n");
     return numberOfOpen;
   }
 
-  public boolean percolates() {// does the system percolate?
-    return this.qu_sites.connected(n * n, n * n + 1);
+  public boolean percolates() { // does the system percolate?
+    return this.quSites.connected(n * n, n * n + 1);
   }
 
-  public static void main(String[] args) {// test client (optional)
+  public static void main(String[] args) { // test client (optional)
     test1();
     test2();
   }
@@ -149,7 +150,6 @@ public class Percolation {
     System.out.println("p.percolates() = " + p.percolates());
     System.out.println("p.numberOfOpenSites() = " + p.numberOfOpenSites());
   }
-
 
   private static void test2() {
     System.out.printf("Test2\n");
