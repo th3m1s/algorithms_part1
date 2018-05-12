@@ -24,10 +24,10 @@ public class PercolationStats {
         int row = StdRandom.uniform(1, n + 1);
         int col = StdRandom.uniform(1, n + 1);
 
-        if (percolate.isOpen(row, col)) {
-          // System.out.printf("[%d, %d]isOpen\n", row, col);
-          continue;
-        }
+        // if (percolate.isOpen(row, col)) {
+        //   // System.out.printf("[%d, %d]isOpen\n", row, col);
+        //   continue;
+        // }
         percolate.open(row, col);
       }
       // System.out.printf("Percolated\n");
@@ -61,9 +61,6 @@ public class PercolationStats {
     trials = Integer.parseInt(args[1]);
 
     PercolationStats pls = new PercolationStats(n, trials);
-    // mean                    = 0.5929934999999997
-    // stddev                  = 0.00876990421552567
-    // 95% confidence interval = [0.5912745987737567, 0.5947124012262428]
     System.out.printf("mean %f\n", pls.mean());
     System.out.printf("stddev %f\n", pls.stddev());
     System.out.printf(
