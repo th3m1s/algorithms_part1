@@ -50,3 +50,5 @@ ln -s $ALGS4ROOT/env/algs4 ~/usr/local/
 
 mkdir -p ~/usr/bin
 ln -s $ALGS4ROOT/env/bin/* ~/usr/bin/
+
+ln -s $ALGS4ROOT/env/.drjava ~
