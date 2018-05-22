@@ -30,7 +30,7 @@ unzip findbugs.zip
 # Download PMD 5.8.1 from pmd.zip; our PMD configuration file from pmd.xml and the PMD wrapper scripts pmd-algs4, pmd-cos226, and pmd-coursera.
 curl -O "https://algs4.cs.princeton.edu/linux/pmd.{zip,xml}"
 # curl -O "https://algs4.cs.princeton.edu/linux/pmd-{algs4,cos226,coursera}"
-pmd.zip
+unzip pmd.zip
 
 
 
