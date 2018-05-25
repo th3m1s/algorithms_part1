@@ -46,9 +46,16 @@ rm *.zip
 cd ..
 
 mkdir -p ~/usr/local
+unlink $ALGS4ROOT/env/algs4
 ln -s $ALGS4ROOT/env/algs4 ~/usr/local/
 
 mkdir -p ~/usr/bin
+unlink $ALGS4ROOT/env/bin/check*
+unlink $ALGS4ROOT/env/bin/drjava
+unlink $ALGS4ROOT/env/bin/findbugs*
+unlink $ALGS4ROOT/env/bin/java*
+unlink $ALGS4ROOT/env/bin/pmd*
 ln -s $ALGS4ROOT/env/bin/* ~/usr/bin/
 
+unlink ~/.drjava
 ln -s $ALGS4ROOT/env/.drjava ~
